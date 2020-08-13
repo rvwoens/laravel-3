@@ -8,6 +8,8 @@
 - replaced "yield" function because that became a keyword
 - get_magic_quotes_gpc() dependency removed for php >=7.4
 - constructors named as class-name instead of __construct altered
+- included basic composer.json to get phpunit up and running
+- made testing possible in application/tests
 
 [OLD Documentation ](https://laravel3.veliovgroup.com/docs)
 
