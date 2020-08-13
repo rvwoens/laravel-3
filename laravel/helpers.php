@@ -295,6 +295,8 @@ function eloquent_to_json($models)
  */
 function magic_quotes()
 {
+	if (version_compare(PHP_VERSION, '7.4.0', '>='))
+		return false;
 	return function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc();
 }
 
@@ -560,9 +562,9 @@ function render_each($partial, array $data, $iterator, $empty = 'raw|')
  * @param  string  $section
  * @return string
  */
-function yield($section)
+function yieldLV($section)
 {
-	return Section::yield($section);
+	return Laravel\Section::yieldLV($section);
 }
 
 /**

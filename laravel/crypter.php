@@ -7,14 +7,14 @@ class Crypter {
 	 *
 	 * @var string
 	 */
-	public static $cipher = MCRYPT_RIJNDAEL_256;
+	// php74 public static $cipher = MCRYPT_RIJNDAEL_256;
 
 	/**
 	 * The encryption mode.
 	 *
 	 * @var string
 	 */
-	public static $mode = MCRYPT_MODE_CBC;
+	// php74 public static $mode = MCRYPT_MODE_CBC;
 
 	/**
 	 * The block size of the cipher.
@@ -31,15 +31,26 @@ class Crypter {
 	 * @param  string  $value
 	 * @return string
 	 */
-	public static function encrypt($value)
-	{
-		$iv = mcrypt_create_iv(static::iv_size(), static::randomizer());
+	public static function encrypt($value) {
+		if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+			$iv = random_bytes(16);
+			$value = static::pad($value);
+			$value = \openssl_encrypt($value, 'AES-128-CBC', static::key(), 0, $iv);
+			if ($value === false) {
+				throw new \RuntimeException('Could not encrypt the data.');
+			}
+			return base64_encode($iv.$value);
 
-		$value = static::pad($value);
+		}
+		else {
+			$iv = mcrypt_create_iv(static::iv_size(), static::randomizer());
 
-		$value = mcrypt_encrypt(static::$cipher, static::key(), $value, static::$mode, $iv);
+			$value = static::pad($value);
 
-		return base64_encode($iv.$value);
+			$value = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, static::key(), $value, MCRYPT_MODE_CBC, $iv);
+
+			return base64_encode($iv.$value);
+		}
 	}
 
 	/**
@@ -48,25 +59,38 @@ class Crypter {
 	 * @param  string  $value
 	 * @return string
 	 */
-	public static function decrypt($value)
-	{
-		$value = base64_decode($value);
+	public static function decrypt($value) {
+		// mcrypt not supported for PHP >= 7.1
+		if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+			$value = base64_decode($value);
+			$iv = substr($value, 0, 16);
+			$value = substr($value, 16);
 
-		// To decrypt the value, we first need to extract the input vector and
-		// the encrypted value. The input vector size varies across different
-		// encryption ciphers and modes, so we'll get the correct size.
-		$iv = substr($value, 0, static::iv_size());
+			$decrypted = \openssl_decrypt($value, 'AES-128-CBC', static::key(), 0, $iv);
+			if ($decrypted === false) {
+				throw new DecryptException('Could not decrypt the data.');
+			}
+			return static::unpad($decrypted);
+		}
+		else {
+			$value = base64_decode($value);
 
-		$value = substr($value, static::iv_size());
+			// To decrypt the value, we first need to extract the input vector and
+			// the encrypted value. The input vector size varies across different
+			// encryption ciphers and modes, so we'll get the correct size.
+			$iv = substr($value, 0, static::iv_size());
 
-		// Once we have the input vector and the value, we can give them both
-		// to Mcrypt for decryption. The value is sometimes padded with \0,
-		// so we will trim all of the padding characters.
-		$key = static::key();
+			$value = substr($value, static::iv_size());
 
-		$value = mcrypt_decrypt(static::$cipher, $key, $value, static::$mode, $iv);
+			// Once we have the input vector and the value, we can give them both
+			// to Mcrypt for decryption. The value is sometimes padded with \0,
+			// so we will trim all of the padding characters.
+			$key = static::key();
 
-		return static::unpad($value);
+			$value = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $value, MCRYPT_MODE_CBC, $iv);
+
+			return static::unpad($value);
+		}
 	}
 
 	/**
@@ -105,7 +129,7 @@ class Crypter {
 	 */
 	protected static function iv_size()
 	{
-		return mcrypt_get_iv_size(static::$cipher, static::$mode);
+		return mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 	}
 
 	/**
@@ -116,7 +140,7 @@ class Crypter {
 	 */
 	protected static function pad($value)
 	{
-		$pad = static::$block - (strlen($value) % static::$block);
+		$pad = static::$block - (Str::length($value) % static::$block);
 
 		return $value .= str_repeat(chr($pad), $pad);
 	}
@@ -129,16 +153,16 @@ class Crypter {
 	 */
 	protected static function unpad($value)
 	{
-		$pad = ord(substr($value, -1));
+		$pad = ord($value[($length = Str::length($value)) - 1]);
 
-		if ($pad and $pad <= static::$block)
+		if ($pad and $pad < static::$block)
 		{
 			// If the correct padding is present on the string, we will remove
 			// it and return the value. Otherwise, we'll throw an exception
 			// as the padding appears to have been changed.
 			if (preg_match('/'.chr($pad).'{'.$pad.'}$/', $value))
 			{
-				return substr($value, 0, strlen($value) - $pad);
+				return substr($value, 0, $length - $pad);
 			}
 
 			// If the padding characters do not match the expected padding

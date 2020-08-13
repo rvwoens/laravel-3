@@ -69,7 +69,7 @@ class Section {
 	 */
 	public static function yield_section()
 	{
-		return static::yield(static::stop());
+		return static::yieldLV(static::stop());
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Section {
 	 * @param  string  $section
 	 * @return string
 	 */
-	public static function yield($section)
+	public static function yieldLV($section)
 	{
 		return (isset(static::$sections[$section])) ? static::$sections[$section] : '';
 	}
