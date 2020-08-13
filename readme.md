@@ -1,19 +1,24 @@
 # [Laravel](https://laravel3.veliovgroup.com/docs) - A PHP Framework For Web Artisans
 
-## L3 is no longer maintained, so this is a version which works with the latest PHP and security patches
+## L3 is no longer maintained, so here is a version which works with the latest PHP and security patches
 
-- based on a clone of https://github.com/laravel/laravel/tree/3.0 with only the changes needed.
+- based on a clone of https://github.com/laravel/laravel/tree/3.0 with only the changes needed. No "extra" stuff.
 - Tested with php 7.4
 - mcrypt dependency removed for php >=7.1
 - replaced "yield" function because that became a keyword
 - get_magic_quotes_gpc() dependency removed for php >=7.4
+- constructors named as class-name instead of __construct altered
+
+[OLD Documentation ](https://laravel3.veliovgroup.com/docs)
+
+After installation you can see the docs using the /docs route
+
+## ---------------------------------------------------------------------------------------------------------------------------
 
 Laravel is a clean and classy framework for PHP web development. Freeing you
 from spaghetti code, Laravel helps you create wonderful applications using
 simple, expressive syntax. Development should be a creative experience that you
 enjoy, not something that is painful. Enjoy the fresh air.
-
-[OLD Documentation ](https://laravel3.veliovgroup.com/docs)
 
 ## Feature Overview
 
