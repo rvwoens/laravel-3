@@ -2,6 +2,7 @@
 
 ## L3 is no longer maintained, so this is a version which works with the latest PHP and security patches
 
+- based on a clone of https://github.com/laravel/laravel/tree/3.0 with only the changes needed.
 - Tested with php 7.4
 - mcrypt dependency removed for php >=7.1
 - replaced "yield" function because that became a keyword
