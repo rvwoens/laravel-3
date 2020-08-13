@@ -1,4 +1,6 @@
-# [Laravel](http://laravel.com) - A PHP Framework For Web Artisans
+# [Laravel](https://laravel3.veliovgroup.com/docs) - A PHP Framework For Web Artisans
+
+# L3 is no longer maintained, so this is a version which works with the latest PHP and security patches
 
 Laravel is a clean and classy framework for PHP web development. Freeing you
 from spaghetti code, Laravel helps you create wonderful applications using
