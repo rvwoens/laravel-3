@@ -1,13 +1,18 @@
 # [Laravel](https://laravel3.veliovgroup.com/docs) - A PHP Framework For Web Artisans
 
-# L3 is no longer maintained, so this is a version which works with the latest PHP and security patches
+## L3 is no longer maintained, so this is a version which works with the latest PHP and security patches
+
+- Tested with php 7.4
+- mcrypt dependency removed for php >=7.1
+- replaced "yield" function because that became a keyword
+- get_magic_quotes_gpc() dependency removed for php >=7.4
 
 Laravel is a clean and classy framework for PHP web development. Freeing you
 from spaghetti code, Laravel helps you create wonderful applications using
 simple, expressive syntax. Development should be a creative experience that you
 enjoy, not something that is painful. Enjoy the fresh air.
 
-[Official Website & Documentation](http://laravel.com)
+[OLD Documentation ](https://laravel3.veliovgroup.com/docs)
 
 ## Feature Overview
 
