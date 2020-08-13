@@ -89,7 +89,7 @@ class Runner extends Task {
 		$esc_path = escapeshellarg($path);
 
 		putenv('LARAVEL_ENV='.Request::env());
-		passthru('phpunit --configuration '.$esc_path, $status);
+		passthru('vendor/bin/phpunit --configuration '.$esc_path, $status);
 
 		@unlink($path);
 

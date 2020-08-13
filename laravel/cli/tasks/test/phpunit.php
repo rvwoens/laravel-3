@@ -19,3 +19,5 @@ require path('sys').'core.php';
 // Start the default bundle.
 // --------------------------------------------------------------
 Laravel\Bundle::start(DEFAULT_BUNDLE);
+
+require_once 'vendor/autoload.php';

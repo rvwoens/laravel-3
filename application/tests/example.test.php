@@ -1,6 +1,8 @@
 <?php
 
-class TestExample extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TestExample extends TestCase {
 
 	/**
 	 * Test that a given condition is met.
