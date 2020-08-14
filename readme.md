@@ -15,7 +15,7 @@
 
 After installation you can see the docs using the /docs route
 
-## ---------------------------------------------------------------------------------------------------------------------------
+## --------------------------------------------------------
 
 Laravel is a clean and classy framework for PHP web development. Freeing you
 from spaghetti code, Laravel helps you create wonderful applications using
